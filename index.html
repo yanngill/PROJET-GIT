@@ -91,7 +91,7 @@
       L.circle(e.latlng, radius).addTo(map);
     });
 
-    // --- Point : Pointe du Hoc
+    // --- Marqueur cliquable : Pointe du Hoc
     const popupPointeHoc = `
       <div class="popup-content">
         <strong>Pointe du Hoc</strong><br>
@@ -103,7 +103,18 @@
         </a>
       </div>`;
 
-    L.marker([49.3965263, -0.9881764]).addTo(map).bindPopup(popupPointeHoc);
+    const markerPointeHoc = L.marker([49.3965263, -0.9881764], {
+      icon: L.icon({
+        iconUrl: 'https://unpkg.com/leaflet@1.9.3/dist/images/marker-icon.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowUrl: '',
+        shadowSize: [0, 0]
+      })
+    }).addTo(map).bindPopup(popupPointeHoc);
+
+    // Label Pointe du Hoc
     const labelPointeHoc = L.marker([49.3965263, -0.9881764], {
       icon: L.divIcon({
         className: 'label-icon',
@@ -112,7 +123,7 @@
       interactive: false
     }).addTo(map);
 
-    // --- Point : Le Ruquet 1
+    // --- Autres points et labels
     const popupRuquet1 = `
       <div class="popup-content">
         <strong>Le Ruquet – Secteur Est Omaha</strong><br>
@@ -123,7 +134,6 @@
         </a>
       </div>`;
 
-    L.marker([49.364435, -0.863437]).addTo(map).bindPopup(popupRuquet1);
     const labelRuquet1 = L.marker([49.364435, -0.863437], {
       icon: L.divIcon({
         className: 'label-icon',
@@ -132,18 +142,16 @@
       interactive: false
     }).addTo(map);
 
-    // --- Point : Mur de soutènement – Le Ruquet
     const popupRuquet2 = `
       <div class="popup-content">
         <strong>Mur de soutènement – Le Ruquet</strong><br>
-        Un des éléments défensifs encore visibles aujourd’hui. Cette zone témoigne de la difficulté des troupes à progresser sous le feu depuis la plage vers les hauteurs.
+        Un des éléments défensifs encore visibles aujourd’hui.
         <img src="https://i.imgur.com/azReUzU.jpeg" alt="Mur du Ruquet - Avant">
         <a href="https://www.google.com/maps/dir/?api=1&destination=49.364151,-0.864825" target="_blank" class="btn-map">
           💠 S'y rendre
         </a>
       </div>`;
 
-    L.marker([49.364151, -0.864825]).addTo(map).bindPopup(popupRuquet2);
     const labelRuquet2 = L.marker([49.364151, -0.864825], {
       icon: L.divIcon({
         className: 'label-icon',
@@ -152,7 +160,6 @@
       interactive: false
     }).addTo(map);
 
-    // --- Grands labels de zones
     const labelOmaha = L.marker([49.375566, -0.851902], {
       icon: L.divIcon({
         className: 'label-icon',
@@ -177,7 +184,6 @@
       interactive: false
     }).addTo(map);
 
-    // Tableau des autres labels pour les masquer/afficher facilement
     const otherMarkers = [
       labelRuquet1,
       labelRuquet2,
@@ -186,21 +192,26 @@
       labelZoneHoc
     ];
 
-    // --- Affichage conditionnel + Zoom Display
+    // --- Gérer les affichages
     function updateLabelVisibility() {
       const zoom = map.getZoom();
 
-      // Masquer tous les labels
       document.querySelectorAll('.label-text').forEach(el => el.style.display = 'none');
       document.querySelectorAll('.label-big').forEach(el => el.style.display = 'none');
 
-      // Label spécial Pointe du Hoc entre zoom 1 et 9
-      const pointeHocMarker = labelPointeHoc._icon?.parentElement;
-      if (pointeHocMarker) {
-        pointeHocMarker.style.display = (zoom >= 1 && zoom <= 9) ? 'block' : 'none';
+      // Label spécial "Pointe du Hoc" (1 à 9)
+      const labelHocEl = labelPointeHoc._icon?.parentElement;
+      if (labelHocEl) {
+        labelHocEl.style.display = (zoom >= 1 && zoom <= 9) ? 'block' : 'none';
       }
 
-      // Masquer/afficher les autres marqueurs (10+)
+      // Marqueur cliquable "Pointe du Hoc" (5 à 19)
+      const markerHocEl = markerPointeHoc._icon?.parentElement;
+      if (markerHocEl) {
+        markerHocEl.style.display = (zoom >= 5) ? 'block' : 'none';
+      }
+
+      // Autres labels et marqueurs (10+)
       otherMarkers.forEach(marker => {
         const markerEl = marker._icon?.parentElement;
         if (markerEl) {
@@ -208,12 +219,10 @@
         }
       });
 
-      // Afficher grands labels entre 10 et 14
       if (zoom >= 10 && zoom <= 14) {
         document.querySelectorAll('.label-big').forEach(el => el.style.display = 'block');
       }
 
-      // Afficher petits labels à partir de 15
       if (zoom >= 15) {
         document.querySelectorAll('.label-text').forEach(el => el.style.display = 'block');
       }

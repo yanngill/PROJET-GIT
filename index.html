@@ -91,7 +91,7 @@
       L.circle(e.latlng, radius).addTo(map);
     });
 
-    // --- Marqueur cliquable : Pointe du Hoc
+    // --- Pointe du Hoc
     const popupPointeHoc = `
       <div class="popup-content">
         <strong>La Pointe du Hoc</strong><br>
@@ -115,13 +115,14 @@
     }).addTo(map).bindPopup(popupPointeHoc);
 
     const labelPointeHoc = L.marker([49.3965263, -0.9881764], {
-  icon: L.divIcon({
-    className: 'label-icon',
-    html: '<span class="label-text">La Pointe du Hoc</span>'
-  }),
-  interactive: false
-}).addTo(map);
+      icon: L.divIcon({
+        className: 'label-icon',
+        html: '<span class="label-text">La Pointe du Hoc</span>'
+      }),
+      interactive: false
+    }).addTo(map);
 
+    // --- Le Ruquet
     const popupRuquet1 = `
       <div class="popup-content">
         <strong>Le Ruquet – Secteur Est Omaha</strong><br>
@@ -158,6 +159,7 @@
       interactive: false
     }).addTo(map);
 
+    // --- Labels géants
     const labelOmaha = L.marker([49.375566, -0.851902], {
       icon: L.divIcon({
         className: 'label-icon',
@@ -182,26 +184,23 @@
       interactive: false
     }).addTo(map);
 
-    const allSmallLabels = [
-      labelPointeHoc,
-      labelRuquet1,
-      labelRuquet2
-    ];
+    // --- Groupes
+    const allSmallLabels = [labelPointeHoc, labelRuquet1, labelRuquet2];
+    const allBigLabels = [labelOmaha, labelUtah, labelZoneHoc];
 
-    const allBigLabels = [
-      labelOmaha,
-      labelUtah,
-      labelZoneHoc
-    ];
-
+    // --- Fonctions de zoom
     function updateLabelVisibility() {
       const zoom = map.getZoom();
 
-      // 1. Label "LA Pointe du Hoc" seul entre zoom 1-9
+      // 1. Petits labels
       allSmallLabels.forEach(label => {
         const el = label._icon?.parentElement;
         if (el) {
-          el.style.display = (zoom >= 10 || label === labelPointeHoc) ? 'block' : 'none';
+          if (label === labelPointeHoc) {
+            el.style.display = (zoom >= 1) ? 'block' : 'none';
+          } else {
+            el.style.display = (zoom >= 10) ? 'block' : 'none';
+          }
         }
       });
 
@@ -213,7 +212,7 @@
         }
       });
 
-      // 3. Marqueur cliquable de la Pointe du Hoc (visible à partir de zoom 5)
+      // 3. Marqueur cliquable de La Pointe du Hoc (5+)
       const markerHocEl = markerPointeHoc._icon?.parentElement;
       if (markerHocEl) {
         markerHocEl.style.display = (zoom >= 5) ? 'block' : 'none';

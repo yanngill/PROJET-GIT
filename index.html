@@ -177,38 +177,47 @@
       interactive: false
     }).addTo(map);
 
+    // Tableau des autres labels pour les masquer/afficher facilement
+    const otherMarkers = [
+      labelRuquet1,
+      labelRuquet2,
+      labelOmaha,
+      labelUtah,
+      labelZoneHoc
+    ];
+
     // --- Affichage conditionnel + Zoom Display
     function updateLabelVisibility() {
-  const zoom = map.getZoom();
+      const zoom = map.getZoom();
 
-  // Masquer tous les labels
-  document.querySelectorAll('.label-text').forEach(el => el.style.display = 'none');
-  document.querySelectorAll('.label-big').forEach(el => el.style.display = 'none');
+      // Masquer tous les labels
+      document.querySelectorAll('.label-text').forEach(el => el.style.display = 'none');
+      document.querySelectorAll('.label-big').forEach(el => el.style.display = 'none');
 
-  // Afficher uniquement le label Pointe du Hoc entre zoom 1 et 9
-  const pointeHocMarker = labelPointeHoc._icon?.parentElement;
-  if (pointeHocMarker) {
-    pointeHocMarker.style.display = (zoom >= 1 && zoom <= 9) ? 'block' : 'none';
-  }
+      // Label spécial Pointe du Hoc entre zoom 1 et 9
+      const pointeHocMarker = labelPointeHoc._icon?.parentElement;
+      if (pointeHocMarker) {
+        pointeHocMarker.style.display = (zoom >= 1 && zoom <= 9) ? 'block' : 'none';
+      }
 
-  // Affichage des autres marqueurs uniquement si zoom >= 10
-  otherMarkers.forEach(marker => {
-    const markerEl = marker._icon?.parentElement;
-    if (markerEl) {
-      markerEl.style.display = (zoom >= 10) ? 'block' : 'none';
+      // Masquer/afficher les autres marqueurs (10+)
+      otherMarkers.forEach(marker => {
+        const markerEl = marker._icon?.parentElement;
+        if (markerEl) {
+          markerEl.style.display = (zoom >= 10) ? 'block' : 'none';
+        }
+      });
+
+      // Afficher grands labels entre 10 et 14
+      if (zoom >= 10 && zoom <= 14) {
+        document.querySelectorAll('.label-big').forEach(el => el.style.display = 'block');
+      }
+
+      // Afficher petits labels à partir de 15
+      if (zoom >= 15) {
+        document.querySelectorAll('.label-text').forEach(el => el.style.display = 'block');
+      }
     }
-  });
-
-  // Labels géants de 10 à 14
-  if (zoom >= 10 && zoom <= 14) {
-    document.querySelectorAll('.label-big').forEach(el => el.style.display = 'block');
-  }
-
-  // Petits labels à partir de 15
-  if (zoom >= 15) {
-    document.querySelectorAll('.label-text').forEach(el => el.style.display = 'block');
-  }
-}
 
     function updateZoomDisplay() {
       const currentZoom = map.getZoom();

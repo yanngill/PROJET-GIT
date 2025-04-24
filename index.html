@@ -161,15 +161,19 @@
     }).addTo(map);
 
     // --- Affichage conditionnel
-    function updateLabelVisibility() {
-      const zoom = map.getZoom();
-      document.querySelectorAll('.label-text').forEach(el => {
-        el.style.display = (zoom >= 15) ? 'block' : 'none';
-      });
-      document.querySelectorAll('.label-big').forEach(el => {
-        el.style.display = (zoom <= 13) ? 'block' : 'none';
-      });
-    }
+   function updateLabelVisibility() {
+  const zoom = map.getZoom();
+
+  // Affiche les petits labels entre zoom 15 et 18
+  document.querySelectorAll('.label-text').forEach(el => {
+    el.style.display = (zoom >= 15 && zoom <= 18) ? 'block' : 'none';
+  });
+
+  // Affiche les grands labels entre zoom 9 et 13
+  document.querySelectorAll('.label-big').forEach(el => {
+    el.style.display = (zoom >= 9 && zoom <= 13) ? 'block' : 'none';
+  });
+}
 
     map.on('zoomend', updateLabelVisibility);
     updateLabelVisibility();

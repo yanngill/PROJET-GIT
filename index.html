@@ -5,6 +5,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-sW3EY9XzyyIjceI9zsmxAdnN8x7vTZU4vJNPf1f49QcZT6Gj+V/Phd0ivM3hcn1L6+bdq7O7RAcDMEZk2Wl7Nw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <style>
     #map { height: 100vh; }
     .popup-content { max-width: 250px; }
@@ -19,6 +20,21 @@
       text-decoration: none;
       border-radius: 5px;
       text-align: center;
+    }
+    .btn-map i {
+      margin-right: 5px;
+    }
+    .label-icon {
+      background: none;
+      border: none;
+    }
+    .label-text {
+      font-size: 14px;
+      font-weight: bold;
+      color: darkred;
+      background-color: rgba(255,255,255,0.8);
+      padding: 2px 6px;
+      border-radius: 4px;
     }
   </style>
 </head>
@@ -43,18 +59,42 @@
     }
     map.on('locationfound', onLocationFound);
 
-    // Marqueur Pointe du Hoc
+    // Popup de la Pointe du Hoc
     const popupContent = `
       <div class="popup-content">
         <strong>Pointe du Hoc</strong><br>
         Position stratégique prise d'assaut par les Rangers américains le 6 juin 1944.
         <img src="https://i.imgur.com/1U8cKFq.jpeg" alt="Pointe du Hoc - Avant">
         <iframe src="https://www.youtube.com/embed/zR7TCXmPq9M" frameborder="0" allowfullscreen></iframe>
-        <a href="https://www.google.com/maps/dir/?api=1&destination=49.3965263,-0.9881764" target="_blank" class="btn-map">📍 M'emmener ici</a>
+        <a href="https://www.google.com/maps/dir/?api=1&destination=49.3965263,-0.9881764" target="_blank" class="btn-map">
+          <i class="fas fa-compass"></i> S'y rendre
+        </a>
       </div>`;
 
     L.marker([49.3965263, -0.9881764]).addTo(map)
       .bindPopup(popupContent);
+
+    // Étiquette "Pointe du Hoc" visible uniquement quand on est dézommé
+    const label = L.marker([49.3965263, -0.9881764], {
+      icon: L.divIcon({
+        className: 'label-icon',
+        html: '<span class="label-text">Pointe du Hoc</span>'
+      }),
+      interactive: false
+    }).addTo(map);
+
+    function updateLabelVisibility() {
+      const zoom = map.getZoom();
+      const labelText = document.querySelector('.label-text');
+      if (zoom >= 15) {
+        labelText.style.display = 'none';
+      } else {
+        labelText.style.display = 'block';
+      }
+    }
+
+    map.on('zoomend', updateLabelVisibility);
+    updateLabelVisibility(); // Appel initial
   </script>
 </body>
 </html>

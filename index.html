@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Pointe du Hoc - Carte interactive</title>
+  <title>Carte interactive - Débarquement</title>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
@@ -11,30 +11,42 @@
     .popup-content { max-width: 250px; }
     img { width: 100%; margin-top: 10px; }
     iframe { width: 100%; height: 150px; margin-top: 10px; }
+
     .btn-map {
       display: inline-block;
       margin-top: 10px;
       padding: 8px 12px;
-      background-color: #007bff;
-      color: white;
+      background-color: #00bfff;
+      color: black;
       text-decoration: none;
       border-radius: 5px;
       text-align: center;
+      font-weight: bold;
     }
     .btn-map i {
-      margin-right: 5px;
+      margin-right: 6px;
     }
+
     .label-icon {
       background: none;
       border: none;
     }
     .label-text {
-      font-size: 14px;
+      font-size: 15px;
       font-weight: bold;
-      color: darkred;
-      background-color: rgba(255,255,255,0.8);
-      padding: 2px 6px;
+      color: black;
+      background-color: rgba(0, 191, 255, 0.8);
+      padding: 4px 8px;
       border-radius: 4px;
+      white-space: nowrap;
+    }
+    .label-big {
+      font-size: 28px;
+      font-weight: bold;
+      color: black;
+      background-color: rgba(173, 216, 230, 0.7);
+      padding: 6px 12px;
+      border-radius: 6px;
     }
   </style>
 </head>
@@ -42,7 +54,7 @@
   <div id="map"></div>
   <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
   <script>
-    const map = L.map('map').setView([49.3965263, -0.9881764], 17);
+    const map = L.map('map').setView([49.37, -0.90], 14);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
@@ -51,31 +63,26 @@
 
     // Géolocalisation
     map.locate({setView: true, maxZoom: 16});
-    function onLocationFound(e) {
+    map.on('locationfound', function(e) {
       const radius = e.accuracy / 2;
-      L.marker(e.latlng).addTo(map)
-        .bindPopup("Vous êtes ici").openPopup();
+      L.marker(e.latlng).addTo(map).bindPopup("Vous êtes ici").openPopup();
       L.circle(e.latlng, radius).addTo(map);
-    }
-    map.on('locationfound', onLocationFound);
+    });
 
-    // Popup de la Pointe du Hoc
-    const popupContent = `
+    // Pointe du Hoc
+    const popupPointeHoc = `
       <div class="popup-content">
         <strong>Pointe du Hoc</strong><br>
         Position stratégique prise d'assaut par les Rangers américains le 6 juin 1944.
         <img src="https://i.imgur.com/1U8cKFq.jpeg" alt="Pointe du Hoc - Avant">
         <iframe src="https://www.youtube.com/embed/zR7TCXmPq9M" frameborder="0" allowfullscreen></iframe>
         <a href="https://www.google.com/maps/dir/?api=1&destination=49.3965263,-0.9881764" target="_blank" class="btn-map">
-          <i class="fas fa-compass"></i> S'y rendre
+          💠 S'y rendre
         </a>
       </div>`;
 
-    L.marker([49.3965263, -0.9881764]).addTo(map)
-      .bindPopup(popupContent);
-
-    // Étiquette "Pointe du Hoc" visible uniquement quand on est dézommé
-    const label = L.marker([49.3965263, -0.9881764], {
+    L.marker([49.3965263, -0.9881764]).addTo(map).bindPopup(popupPointeHoc);
+    const labelPointeHoc = L.marker([49.3965263, -0.9881764], {
       icon: L.divIcon({
         className: 'label-icon',
         html: '<span class="label-text">Pointe du Hoc</span>'
@@ -83,18 +90,67 @@
       interactive: false
     }).addTo(map);
 
+    // Le Ruquet – Point 1
+    const popupRuquet1 = `
+      <div class="popup-content">
+        <strong>Le Ruquet – Secteur Est Omaha</strong><br>
+        Secteur de débarquement américain le 6 juin 1944. Ici, les GI’s ont affronté un feu nourri en tentant de franchir la digue et les hauteurs qui dominent la plage.
+        <img src="https://i.imgur.com/ytGMbFz.jpeg" alt="Le Ruquet - Avant">
+        <a href="https://www.google.com/maps/dir/?api=1&destination=49.364435,-0.863437" target="_blank" class="btn-map">
+          💠 S'y rendre
+        </a>
+      </div>`;
+
+    L.marker([49.364435, -0.863437]).addTo(map).bindPopup(popupRuquet1);
+    const labelRuquet1 = L.marker([49.364435, -0.863437], {
+      icon: L.divIcon({
+        className: 'label-icon',
+        html: '<span class="label-text">Le Ruquet (Omaha Est)</span>'
+      }),
+      interactive: false
+    }).addTo(map);
+
+    // Le Ruquet – Point 2
+    const popupRuquet2 = `
+      <div class="popup-content">
+        <strong>Mur de soutènement – Le Ruquet</strong><br>
+        Un des éléments défensifs encore visibles aujourd’hui. Cette zone témoigne de la difficulté des troupes à progresser sous le feu depuis la plage vers les hauteurs.
+        <img src="https://i.imgur.com/azReUzU.jpeg" alt="Mur du Ruquet - Avant">
+        <a href="https://www.google.com/maps/dir/?api=1&destination=49.364151,-0.864825" target="_blank" class="btn-map">
+          💠 S'y rendre
+        </a>
+      </div>`;
+
+    L.marker([49.364151, -0.864825]).addTo(map).bindPopup(popupRuquet2);
+    const labelRuquet2 = L.marker([49.364151, -0.864825], {
+      icon: L.divIcon({
+        className: 'label-icon',
+        html: '<span class="label-text">Mur du Ruquet</span>'
+      }),
+      interactive: false
+    }).addTo(map);
+
+    // Grand label Omaha Beach (visible seulement si zoom est bas)
+    const labelOmaha = L.marker([49.365, -0.87], {
+      icon: L.divIcon({
+        className: 'label-icon',
+        html: '<span class="label-big">OMAHA BEACH</span>'
+      }),
+      interactive: false
+    }).addTo(map);
+
     function updateLabelVisibility() {
       const zoom = map.getZoom();
-      const labelText = document.querySelector('.label-text');
-      if (zoom >= 15) {
-        labelText.style.display = 'none';
-      } else {
-        labelText.style.display = 'block';
-      }
+      document.querySelectorAll('.label-text').forEach(el => {
+        el.style.display = (zoom >= 15) ? 'none' : 'block';
+      });
+      document.querySelectorAll('.label-big').forEach(el => {
+        el.style.display = (zoom >= 13) ? 'none' : 'block';
+      });
     }
 
     map.on('zoomend', updateLabelVisibility);
-    updateLabelVisibility(); // Appel initial
+    updateLabelVisibility();
   </script>
 </body>
 </html>

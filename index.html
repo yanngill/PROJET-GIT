@@ -94,7 +94,7 @@
     // --- Marqueur cliquable : Pointe du Hoc
     const popupPointeHoc = `
       <div class="popup-content">
-        <strong>Pointe du Hoc</strong><br>
+        <strong>La Pointe du Hoc</strong><br>
         Position stratégique prise d'assaut par les Rangers américains le 6 juin 1944.
         <img src="https://i.imgur.com/1U8cKFq.jpeg" alt="Pointe du Hoc - Avant">
         <iframe src="https://www.youtube.com/embed/zR7TCXmPq9M" frameborder="0" allowfullscreen></iframe>
@@ -114,20 +114,18 @@
       })
     }).addTo(map).bindPopup(popupPointeHoc);
 
-    // Label Pointe du Hoc
     const labelPointeHoc = L.marker([49.3965263, -0.9881764], {
       icon: L.divIcon({
         className: 'label-icon',
-        html: '<span class="label-text">Pointe du Hoc</span>'
+        html: '<span class="label-text">LA Pointe du Hoc</span>'
       }),
       interactive: false
     }).addTo(map);
 
-    // --- Autres points et labels
     const popupRuquet1 = `
       <div class="popup-content">
         <strong>Le Ruquet – Secteur Est Omaha</strong><br>
-        Secteur de débarquement américain le 6 juin 1944. Ici, les GI’s ont affronté un feu nourri en tentant de franchir la digue et les hauteurs qui dominent la plage.
+        Secteur de débarquement américain le 6 juin 1944.
         <img src="https://i.imgur.com/P6rq0yq.jpeg" alt="Le Ruquet - Avant">
         <a href="https://www.google.com/maps/dir/?api=1&destination=49.364435,-0.863437" target="_blank" class="btn-map">
           💠 S'y rendre
@@ -145,7 +143,7 @@
     const popupRuquet2 = `
       <div class="popup-content">
         <strong>Mur de soutènement – Le Ruquet</strong><br>
-        Un des éléments défensifs encore visibles aujourd’hui.
+        Élément défensif encore visible aujourd’hui.
         <img src="https://i.imgur.com/azReUzU.jpeg" alt="Mur du Ruquet - Avant">
         <a href="https://www.google.com/maps/dir/?api=1&destination=49.364151,-0.864825" target="_blank" class="btn-map">
           💠 S'y rendre
@@ -184,47 +182,41 @@
       interactive: false
     }).addTo(map);
 
-    const otherMarkers = [
+    const allSmallLabels = [
+      labelPointeHoc,
       labelRuquet1,
-      labelRuquet2,
+      labelRuquet2
+    ];
+
+    const allBigLabels = [
       labelOmaha,
       labelUtah,
       labelZoneHoc
     ];
 
-    // --- Gérer les affichages
     function updateLabelVisibility() {
       const zoom = map.getZoom();
 
-      document.querySelectorAll('.label-text').forEach(el => el.style.display = 'none');
-      document.querySelectorAll('.label-big').forEach(el => el.style.display = 'none');
-
-      // Label spécial "Pointe du Hoc" (1 à 9)
-      const labelHocEl = labelPointeHoc._icon?.parentElement;
-      if (labelHocEl) {
-        labelHocEl.style.display = (zoom >= 1 && zoom <= 9) ? 'block' : 'none';
-      }
-
-      // Marqueur cliquable "Pointe du Hoc" (5 à 19)
-      const markerHocEl = markerPointeHoc._icon?.parentElement;
-      if (markerHocEl) {
-        markerHocEl.style.display = (zoom >= 5) ? 'block' : 'none';
-      }
-
-      // Autres labels et marqueurs (10+)
-      otherMarkers.forEach(marker => {
-        const markerEl = marker._icon?.parentElement;
-        if (markerEl) {
-          markerEl.style.display = (zoom >= 10) ? 'block' : 'none';
+      // 1. Label "LA Pointe du Hoc" seul entre zoom 1-9
+      allSmallLabels.forEach(label => {
+        const el = label._icon?.parentElement;
+        if (el) {
+          el.style.display = (zoom >= 10 || label === labelPointeHoc) ? 'block' : 'none';
         }
       });
 
-      if (zoom >= 10 && zoom <= 14) {
-        document.querySelectorAll('.label-big').forEach(el => el.style.display = 'block');
-      }
+      // 2. Grands labels de 10 à 14
+      allBigLabels.forEach(label => {
+        const el = label._icon?.parentElement;
+        if (el) {
+          el.style.display = (zoom >= 10 && zoom <= 14) ? 'block' : 'none';
+        }
+      });
 
-      if (zoom >= 15) {
-        document.querySelectorAll('.label-text').forEach(el => el.style.display = 'block');
+      // 3. Marqueur cliquable de la Pointe du Hoc (visible à partir de zoom 5)
+      const markerHocEl = markerPointeHoc._icon?.parentElement;
+      if (markerHocEl) {
+        markerHocEl.style.display = (zoom >= 5) ? 'block' : 'none';
       }
     }
 

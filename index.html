@@ -84,14 +84,7 @@
       attribution: '© OpenStreetMap contributors'
     }).addTo(map);
 
-    map.locate({setView: true, maxZoom: 16});
-    map.on('locationfound', function(e) {
-      const radius = e.accuracy / 2;
-      L.marker(e.latlng).addTo(map).bindPopup("Vous êtes ici").openPopup();
-      L.circle(e.latlng, radius).addTo(map);
-    });
-
-    // --- Pointe du Hoc
+    // Marqueur bleu de la Pointe du Hoc (cliquable)
     const popupPointeHoc = `
       <div class="popup-content">
         <strong>La Pointe du Hoc</strong><br>
@@ -114,6 +107,7 @@
       })
     }).addTo(map).bindPopup(popupPointeHoc);
 
+    // Labels petits
     const labelPointeHoc = L.marker([49.3965263, -0.9881764], {
       icon: L.divIcon({
         className: 'label-icon',
@@ -121,17 +115,6 @@
       }),
       interactive: false
     }).addTo(map);
-
-    // --- Le Ruquet
-    const popupRuquet1 = `
-      <div class="popup-content">
-        <strong>Le Ruquet – Secteur Est Omaha</strong><br>
-        Secteur de débarquement américain le 6 juin 1944.
-        <img src="https://i.imgur.com/P6rq0yq.jpeg" alt="Le Ruquet - Avant">
-        <a href="https://www.google.com/maps/dir/?api=1&destination=49.364435,-0.863437" target="_blank" class="btn-map">
-          💠 S'y rendre
-        </a>
-      </div>`;
 
     const labelRuquet1 = L.marker([49.364435, -0.863437], {
       icon: L.divIcon({
@@ -141,16 +124,6 @@
       interactive: false
     }).addTo(map);
 
-    const popupRuquet2 = `
-      <div class="popup-content">
-        <strong>Mur de soutènement – Le Ruquet</strong><br>
-        Élément défensif encore visible aujourd’hui.
-        <img src="https://i.imgur.com/azReUzU.jpeg" alt="Mur du Ruquet - Avant">
-        <a href="https://www.google.com/maps/dir/?api=1&destination=49.364151,-0.864825" target="_blank" class="btn-map">
-          💠 S'y rendre
-        </a>
-      </div>`;
-
     const labelRuquet2 = L.marker([49.364151, -0.864825], {
       icon: L.divIcon({
         className: 'label-icon',
@@ -159,7 +132,7 @@
       interactive: false
     }).addTo(map);
 
-    // --- Labels géants
+    // Labels grands
     const labelOmaha = L.marker([49.375566, -0.851902], {
       icon: L.divIcon({
         className: 'label-icon',
@@ -184,15 +157,15 @@
       interactive: false
     }).addTo(map);
 
-    // --- Groupes
+    // Groupes
     const allSmallLabels = [labelPointeHoc, labelRuquet1, labelRuquet2];
     const allBigLabels = [labelOmaha, labelUtah, labelZoneHoc];
 
-    // --- Fonctions de zoom
+    // Fonctions zoom
     function updateLabelVisibility() {
       const zoom = map.getZoom();
 
-      // 1. Petits labels
+      // Petits labels
       allSmallLabels.forEach(label => {
         const el = label._icon?.parentElement;
         if (el) {
@@ -204,7 +177,7 @@
         }
       });
 
-      // 2. Grands labels de 10 à 14
+      // Grands labels entre zoom 10 et 14
       allBigLabels.forEach(label => {
         const el = label._icon?.parentElement;
         if (el) {
@@ -212,7 +185,7 @@
         }
       });
 
-      // 3. Marqueur cliquable de La Pointe du Hoc (5+)
+      // Marqueur bleu de la Pointe du Hoc
       const markerHocEl = markerPointeHoc._icon?.parentElement;
       if (markerHocEl) {
         markerHocEl.style.display = (zoom >= 5) ? 'block' : 'none';

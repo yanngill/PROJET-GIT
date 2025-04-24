@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
     #map { height: 100vh; }
+
     .popup-content { max-width: 250px; }
     img { width: 100%; margin-top: 10px; }
     iframe { width: 100%; height: 150px; margin-top: 10px; }
@@ -54,10 +55,26 @@
       white-space: nowrap;
       display: none;
     }
+
+    .zoom-indicator {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      z-index: 1000;
+      background: rgba(0, 0, 0, 0.6);
+      color: white;
+      padding: 6px 10px;
+      border-radius: 4px;
+      font-weight: bold;
+      font-family: sans-serif;
+      font-size: 14px;
+    }
   </style>
 </head>
 <body>
   <div id="map"></div>
+  <div id="zoomIndicator" class="zoom-indicator">Zoom : ...</div>
+
   <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
   <script>
     const map = L.map('map').setView([49.37, -0.90], 14);
@@ -135,7 +152,7 @@
       interactive: false
     }).addTo(map);
 
-    // --- Grands labels de zones (visibles si zoom ≤ 13)
+    // --- Grands labels de zones
     const labelOmaha = L.marker([49.375566, -0.851902], {
       icon: L.divIcon({
         className: 'label-icon',
@@ -160,7 +177,7 @@
       interactive: false
     }).addTo(map);
 
-    // --- Affichage conditionnel
+    // --- Affichage conditionnel + Zoom Display
     function updateLabelVisibility() {
       const zoom = map.getZoom();
       document.querySelectorAll('.label-text').forEach(el => {
@@ -171,8 +188,18 @@
       });
     }
 
-    map.on('zoomend', updateLabelVisibility);
+    function updateZoomDisplay() {
+      const currentZoom = map.getZoom();
+      document.getElementById('zoomIndicator').innerText = `Zoom : ${currentZoom}`;
+    }
+
+    map.on('zoomend', () => {
+      updateLabelVisibility();
+      updateZoomDisplay();
+    });
+
     updateLabelVisibility();
+    updateZoomDisplay();
   </script>
 </body>
 </html>

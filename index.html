@@ -84,7 +84,7 @@
       attribution: '© OpenStreetMap contributors'
     }).addTo(map);
 
-    // Marqueur bleu de la Pointe du Hoc (cliquable)
+    // Marqueur cliquable : La Pointe du Hoc
     const popupPointeHoc = `
       <div class="popup-content">
         <strong>La Pointe du Hoc</strong><br>
@@ -107,7 +107,6 @@
       })
     }).addTo(map).bindPopup(popupPointeHoc);
 
-    // Labels petits
     const labelPointeHoc = L.marker([49.3965263, -0.9881764], {
       icon: L.divIcon({
         className: 'label-icon',
@@ -115,6 +114,27 @@
       }),
       interactive: false
     }).addTo(map);
+
+    const popupRuquet1 = `
+      <div class="popup-content">
+        <strong>Le Ruquet – Secteur Est Omaha</strong><br>
+        Secteur de débarquement américain le 6 juin 1944. Ici, les GI’s ont affronté un feu nourri en tentant de franchir la digue et les hauteurs qui dominent la plage.
+        <img src="https://i.imgur.com/P6rq0yq.jpeg" alt="Le Ruquet - Avant">
+        <a href="https://www.google.com/maps/dir/?api=1&destination=49.364435,-0.863437" target="_blank" class="btn-map">
+          💠 S'y rendre
+        </a>
+      </div>`;
+
+    const markerRuquet1 = L.marker([49.364435, -0.863437], {
+      icon: L.icon({
+        iconUrl: 'https://unpkg.com/leaflet@1.9.3/dist/images/marker-icon.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowUrl: '',
+        shadowSize: [0, 0]
+      })
+    }).addTo(map).bindPopup(popupRuquet1);
 
     const labelRuquet1 = L.marker([49.364435, -0.863437], {
       icon: L.divIcon({
@@ -124,6 +144,27 @@
       interactive: false
     }).addTo(map);
 
+        const popupRuquet2 = `
+      <div class="popup-content">
+        <strong>Mur de soutènement – Le Ruquet</strong><br>
+        Un des éléments défensifs encore visibles aujourd’hui. Cette zone témoigne de la difficulté des troupes à progresser sous le feu depuis la plage vers les hauteurs.
+        <img src="https://i.imgur.com/azReUzU.jpeg" alt="Mur du Ruquet - Avant">
+        <a href="https://www.google.com/maps/dir/?api=1&destination=49.364151,-0.864825" target="_blank" class="btn-map">
+          💠 S'y rendre
+        </a>
+      </div>`;
+
+    const markerRuquet2 = L.marker([49.364151, -0.864825], {
+      icon: L.icon({
+        iconUrl: 'https://unpkg.com/leaflet@1.9.3/dist/images/marker-icon.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowUrl: '',
+        shadowSize: [0, 0]
+      })
+    }).addTo(map).bindPopup(popupRuquet2);
+
     const labelRuquet2 = L.marker([49.364151, -0.864825], {
       icon: L.divIcon({
         className: 'label-icon',
@@ -132,7 +173,7 @@
       interactive: false
     }).addTo(map);
 
-    // Labels grands
+    // Grands labels
     const labelOmaha = L.marker([49.375566, -0.851902], {
       icon: L.divIcon({
         className: 'label-icon',
@@ -157,15 +198,14 @@
       interactive: false
     }).addTo(map);
 
-    // Groupes
     const allSmallLabels = [labelPointeHoc, labelRuquet1, labelRuquet2];
     const allBigLabels = [labelOmaha, labelUtah, labelZoneHoc];
+    const allMarkers = [markerPointeHoc, markerRuquet1, markerRuquet2];
 
-    // Fonctions zoom
     function updateLabelVisibility() {
       const zoom = map.getZoom();
 
-      // Petits labels
+      // Affichage petits labels
       allSmallLabels.forEach(label => {
         const el = label._icon?.parentElement;
         if (el) {
@@ -177,7 +217,7 @@
         }
       });
 
-      // Grands labels entre zoom 10 et 14
+      // Affichage grands labels
       allBigLabels.forEach(label => {
         const el = label._icon?.parentElement;
         if (el) {
@@ -185,11 +225,17 @@
         }
       });
 
-      // Marqueur bleu de la Pointe du Hoc
-      const markerHocEl = markerPointeHoc._icon?.parentElement;
-      if (markerHocEl) {
-        markerHocEl.style.display = (zoom >= 5) ? 'block' : 'none';
-      }
+      // Affichage des marqueurs
+      allMarkers.forEach(marker => {
+        const el = marker._icon?.parentElement;
+        if (el) {
+          if (marker === markerPointeHoc) {
+            el.style.display = (zoom >= 5) ? 'block' : 'none';
+          } else {
+            el.style.display = (zoom >= 10) ? 'block' : 'none';
+          }
+        }
+      });
     }
 
     function updateZoomDisplay() {

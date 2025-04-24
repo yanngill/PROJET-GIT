@@ -5,7 +5,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-sW3EY9XzyyIjceI9zsmxAdnN8x7vTZU4vJNPf1f49QcZT6Gj+V/Phd0ivM3hcn1L6+bdq7O7RAcDMEZk2Wl7Nw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
     #map { height: 100vh; }
     .popup-content { max-width: 250px; }
@@ -23,6 +23,7 @@
       text-align: center;
       font-weight: bold;
     }
+
     .btn-map i {
       margin-right: 6px;
     }
@@ -31,6 +32,7 @@
       background: none;
       border: none;
     }
+
     .label-text {
       font-size: 15px;
       font-weight: bold;
@@ -39,7 +41,9 @@
       padding: 4px 8px;
       border-radius: 4px;
       white-space: nowrap;
+      display: none;
     }
+
     .label-big {
       font-size: 28px;
       font-weight: bold;
@@ -47,6 +51,8 @@
       background-color: rgba(173, 216, 230, 0.7);
       padding: 6px 12px;
       border-radius: 6px;
+      white-space: nowrap;
+      display: none;
     }
   </style>
 </head>
@@ -61,7 +67,6 @@
       attribution: '© OpenStreetMap contributors'
     }).addTo(map);
 
-    // Géolocalisation
     map.locate({setView: true, maxZoom: 16});
     map.on('locationfound', function(e) {
       const radius = e.accuracy / 2;
@@ -69,7 +74,7 @@
       L.circle(e.latlng, radius).addTo(map);
     });
 
-    // Pointe du Hoc
+    // --- Point : Pointe du Hoc
     const popupPointeHoc = `
       <div class="popup-content">
         <strong>Pointe du Hoc</strong><br>
@@ -90,7 +95,7 @@
       interactive: false
     }).addTo(map);
 
-    // Le Ruquet – Point 1
+    // --- Point : Le Ruquet 1
     const popupRuquet1 = `
       <div class="popup-content">
         <strong>Le Ruquet – Secteur Est Omaha</strong><br>
@@ -110,7 +115,7 @@
       interactive: false
     }).addTo(map);
 
-    // Le Ruquet – Point 2
+    // --- Point : Mur de soutènement – Le Ruquet
     const popupRuquet2 = `
       <div class="popup-content">
         <strong>Mur de soutènement – Le Ruquet</strong><br>
@@ -130,8 +135,8 @@
       interactive: false
     }).addTo(map);
 
-    // Grand label Omaha Beach (visible seulement si zoom est bas)
-    const labelOmaha = L.marker([49.365, -0.87], {
+    // --- Grands labels de zones (visibles si zoom ≤ 13)
+    const labelOmaha = L.marker([49.375566, -0.851902], {
       icon: L.divIcon({
         className: 'label-icon',
         html: '<span class="label-big">OMAHA BEACH</span>'
@@ -139,13 +144,30 @@
       interactive: false
     }).addTo(map);
 
+    const labelUtah = L.marker([49.426704, -1.170943], {
+      icon: L.divIcon({
+        className: 'label-icon',
+        html: '<span class="label-big">UTAH BEACH</span>'
+      }),
+      interactive: false
+    }).addTo(map);
+
+    const labelZoneHoc = L.marker([49.405119, -0.990373], {
+      icon: L.divIcon({
+        className: 'label-icon',
+        html: '<span class="label-big">POINTE DU HOC</span>'
+      }),
+      interactive: false
+    }).addTo(map);
+
+    // --- Affichage conditionnel
     function updateLabelVisibility() {
       const zoom = map.getZoom();
       document.querySelectorAll('.label-text').forEach(el => {
-        el.style.display = (zoom >= 15) ? 'none' : 'block';
+        el.style.display = (zoom >= 15) ? 'block' : 'none';
       });
       document.querySelectorAll('.label-big').forEach(el => {
-        el.style.display = (zoom >= 13) ? 'none' : 'block';
+        el.style.display = (zoom <= 13) ? 'block' : 'none';
       });
     }
 

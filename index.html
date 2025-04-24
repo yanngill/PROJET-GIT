@@ -179,14 +179,36 @@
 
     // --- Affichage conditionnel + Zoom Display
     function updateLabelVisibility() {
-      const zoom = map.getZoom();
-      document.querySelectorAll('.label-text').forEach(el => {
-        el.style.display = (zoom >= 15) ? 'block' : 'none';
-      });
-      document.querySelectorAll('.label-big').forEach(el => {
-        el.style.display = (zoom <= 13) ? 'block' : 'none';
-      });
+  const zoom = map.getZoom();
+
+  // Masquer tous les labels
+  document.querySelectorAll('.label-text').forEach(el => el.style.display = 'none');
+  document.querySelectorAll('.label-big').forEach(el => el.style.display = 'none');
+
+  // Afficher uniquement le label Pointe du Hoc entre zoom 1 et 9
+  const pointeHocMarker = labelPointeHoc._icon?.parentElement;
+  if (pointeHocMarker) {
+    pointeHocMarker.style.display = (zoom >= 1 && zoom <= 9) ? 'block' : 'none';
+  }
+
+  // Affichage des autres marqueurs uniquement si zoom >= 10
+  otherMarkers.forEach(marker => {
+    const markerEl = marker._icon?.parentElement;
+    if (markerEl) {
+      markerEl.style.display = (zoom >= 10) ? 'block' : 'none';
     }
+  });
+
+  // Labels géants de 10 à 14
+  if (zoom >= 10 && zoom <= 14) {
+    document.querySelectorAll('.label-big').forEach(el => el.style.display = 'block');
+  }
+
+  // Petits labels à partir de 15
+  if (zoom >= 15) {
+    document.querySelectorAll('.label-text').forEach(el => el.style.display = 'block');
+  }
+}
 
     function updateZoomDisplay() {
       const currentZoom = map.getZoom();

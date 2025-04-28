@@ -75,10 +75,8 @@
     iconUrl: 'https://unpkg.com/leaflet@1.9.3/dist/images/marker-icon.png',
     iconSize: [25, 41],
     iconAnchor: [12, 41],
-    popupAnchor: [1, -34],
-    shadowUrl: '',
-    shadowSize: [0, 0]
-  });
+    popupAnchor: [1, -34]
+  }); // >>>>> SUPPRIMÉ le shadowUrl qui causait le carré bleu
 
   function openLightbox(src) {
     const lightbox = document.getElementById('lightbox');
@@ -171,13 +169,12 @@
     interactive: false
   }).addTo(map);
 
-  // Ajout de la position de l'utilisateur
+  // Ajout de la position de l'utilisateur avec étoile US (sans bug)
   let userMarker = null;
-  function onLocationFound(e) {
-    if (userMarker) {
-      userMarker.setLatLng(e.latlng);
-    } else {
-      userMarker = L.marker(e.latlng, {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function(position) {
+      const userLatLng = [position.coords.latitude, position.coords.longitude];
+      userMarker = L.marker(userLatLng, {
         icon: L.icon({
           iconUrl: 'https://upload.wikimedia.org/wikipedia/commons/3/39/US_Army_star_insignia.svg',
           iconSize: [40, 40],
@@ -185,23 +182,8 @@
           popupAnchor: [0, -20]
         })
       }).addTo(map).bindPopup("📍 Vous êtes ici").openPopup();
-    }
+    });
   }
-
-  // Empêcher Leaflet d'ajouter un cercle/carré par défaut
-  map.on('locationfound', function(e) {
-    if (e.layer) {
-      e.layer.remove();
-    }
-  });
-
-  map.on('locationfound', onLocationFound);
-
-  map.locate({
-    setView: false,
-    maxZoom: 16,
-    watch: false
-  });
 
   // Activation du carrousel d'images quand un popup s'ouvre
   map.on('popupopen', function(e) {

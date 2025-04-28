@@ -177,7 +177,7 @@
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(function(position) {
       const userLatLng = [position.coords.latitude, position.coords.longitude];
-     userMarker = L.marker(e.latlng, {
+     userMarker = L.marker(userLatLng, {
   icon: L.icon({
     iconUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/US_Army_star_insignia.png/30px-US_Army_star_insignia.png',
     iconSize: [30, 30],

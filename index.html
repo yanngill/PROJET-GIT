@@ -5,6 +5,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glider-js@1/glider.min.css" />
   <style>
     #map { height: 100vh; }
     .popup-content { max-width: 250px; }
@@ -60,6 +61,8 @@
 </div>
 
 <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/glider-js@1/glider.min.js"></script>
+
 <script>
   const map = L.map('map').setView([49.37, -0.90], 14);
 
@@ -138,31 +141,36 @@
     interactive: false
   }).addTo(map);
 
-  // Débarquement de la 2e DB
-const coordsLeclerc = [49.445259, -1.208396];
-const popupLeclerc = `
-  <div class="popup-content">
-    <strong>Débarquement de la 2e DB – 1er août 1944</strong><br>
-    Le 1er août 1944, la 2e Division Blindée du général Leclerc débarque sur Utah Beach, 
-    au niveau des villages de Saint-Martin-de-Varreville et Saint-Germain-de-Varreville.
-    Ici, tout autour de vous, débute la progression de la 2e DB vers la libération de la France.
-    
-    <img src="https://i.imgur.com/RNu3elD.jpeg" alt="Débarquement 2e DB - Photo 1" onclick="openLightbox(this.src)">
-    <img src="https://i.imgur.com/48QAgaj.jpeg" alt="Débarquement 2e DB - Photo 2" onclick="openLightbox(this.src)">
-    <img src="https://i.imgur.com/vqDfznp.jpeg" alt="Débarquement 2e DB - Photo 3" onclick="openLightbox(this.src)">
+  // Débarquement de la 2e DB avec carrousel
+  const coordsLeclerc = [49.445259, -1.208396];
+  const popupLeclerc = `
+    <div class="popup-content">
+      <strong>Débarquement de la 2e DB – 1er août 1944</strong><br>
+      Le 1er août 1944, la 2e Division Blindée du général Leclerc débarque sur Utah Beach, 
+      au niveau des villages de Saint-Martin-de-Varreville et Saint-Germain-de-Varreville.
+      Ici, tout autour de vous, débute la progression de la 2e DB vers la libération de la France.
+      <div class="glider-contain">
+        <div class="glider">
+          <img src="https://i.imgur.com/RNu3elD.jpeg" alt="Photo 1" onclick="openLightbox(this.src)">
+          <img src="https://i.imgur.com/48QAgaj.jpeg" alt="Photo 2" onclick="openLightbox(this.src)">
+          <img src="https://i.imgur.com/vqDfznp.jpeg" alt="Photo 3" onclick="openLightbox(this.src)">
+        </div>
+        <button aria-label="Previous" class="glider-prev">«</button>
+        <button aria-label="Next" class="glider-next">»</button>
+        <div role="tablist" class="dots"></div>
+      </div>
+      <div style="font-size:10px; margin-top:5px;">Sources : Fondation Maréchal Leclerc de Hauteclocque</div>
+      <a href="https://www.google.com/maps/dir/?api=1&destination=49.445259,-1.208396" target="_blank" class="btn-map">💠 S'y rendre</a>
+    </div>`;
+  L.marker(coordsLeclerc, { icon: noShadowIcon }).addTo(map).bindPopup(popupLeclerc);
+  L.marker(coordsLeclerc, {
+    icon: L.divIcon({
+      className: 'simple-label',
+      html: 'Débarquement 2e DB'
+    }),
+    interactive: false
+  }).addTo(map);
 
-    <div style="font-size:10px; margin-top:5px;">Sources : Fondation Maréchal Leclerc de Hauteclocque</div>
-    <a href="https://www.google.com/maps/dir/?api=1&destination=49.445259,-1.208396" target="_blank" class="btn-map">💠 S'y rendre</a>
-  </div>`;
-L.marker(coordsLeclerc, { icon: noShadowIcon }).addTo(map).bindPopup(popupLeclerc);
-L.marker(coordsLeclerc, {
-  icon: L.divIcon({
-    className: 'simple-label',
-    html: 'Débarquement 2e DB'
-  }),
-  interactive: false
-}).addTo(map);
-  
   // Ajout de la position de l'utilisateur
   let userMarker = null;
   function onLocationFound(e) {
@@ -193,6 +201,23 @@ L.marker(coordsLeclerc, {
     setView: false,
     maxZoom: 16,
     watch: false
+  });
+
+  // Activation du carrousel d'images quand un popup s'ouvre
+  map.on('popupopen', function(e) {
+    const gliderElement = e.popup.getElement().querySelector('.glider');
+    if (gliderElement) {
+      new Glider(gliderElement, {
+        slidesToShow: 1,
+        dots: e.popup.getElement().querySelector('.dots'),
+        arrows: {
+          prev: e.popup.getElement().querySelector('.glider-prev'),
+          next: e.popup.getElement().querySelector('.glider-next')
+        },
+        draggable: true,
+        scrollLock: true
+      });
+    }
   });
 
   // Affichage conditionnel des labels texte simples

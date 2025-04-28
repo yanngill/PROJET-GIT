@@ -140,25 +140,29 @@
   }).addTo(map);
 
   // Ajout de la position de l'utilisateur
-  let userMarker = null;
-  function onLocationFound(e) {
-    const radius = e.accuracy / 2;
-    if (userMarker) {
-      userMarker.setLatLng(e.latlng);
-    } else {
-      userMarker = L.marker(e.latlng, {
-        icon: L.icon({
-          iconUrl: 'https://upload.wikimedia.org/wikipedia/commons/3/39/US_Army_star_insignia.svg',
-          iconSize: [25, 41],
-          iconAnchor: [12, 41],
-          popupAnchor: [1, -34]
-        })
-      }).addTo(map).bindPopup("📍 Vous êtes ici").openPopup();
-    }
+let userMarker = null;
+function onLocationFound(e) {
+  if (userMarker) {
+    userMarker.setLatLng(e.latlng);
+  } else {
+    userMarker = L.marker(e.latlng, {
+      icon: L.icon({
+        iconUrl: 'https://upload.wikimedia.org/wikipedia/commons/3/39/US_Army_star_insignia.svg',
+        iconSize: [40, 40],
+        iconAnchor: [20, 20],
+        popupAnchor: [0, -20]
+      })
+    }).addTo(map).bindPopup("📍 Vous êtes ici").openPopup();
   }
+}
+map.on('locationfound', onLocationFound);
 
-  map.on('locationfound', onLocationFound);
-  map.locate({ watch: true, setView: false, maxZoom: 16 });
+// localiser sans créer de cercle bleu
+map.locate({
+  setView: false,
+  maxZoom: 16,
+  watch: false
+});
 
   // Affichage conditionnel des labels texte simples
   function updateLabelVisibility() {

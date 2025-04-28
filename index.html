@@ -54,7 +54,7 @@
 <body>
 <div id="map"></div>
 
-<!-- Lightbox pour affichage grand format -->
+<!-- Lightbox pour agrandir les images -->
 <div id="lightbox" onclick="this.style.display='none'">
   <img src="" alt="Image en grand">
 </div>
@@ -77,14 +77,13 @@
     shadowSize: [0, 0]
   });
 
-  // Fonction Lightbox
   function openLightbox(src) {
     const lightbox = document.getElementById('lightbox');
     lightbox.style.display = 'flex';
     lightbox.querySelector('img').src = src;
   }
 
-  // Pointe du Hoc
+  // La Pointe du Hoc
   const coordsHoc = [49.3965263, -0.9881764];
   const popupPointeHoc = `
     <div class="popup-content">
@@ -140,29 +139,36 @@
   }).addTo(map);
 
   // Ajout de la position de l'utilisateur
-let userMarker = null;
-function onLocationFound(e) {
-  if (userMarker) {
-    userMarker.setLatLng(e.latlng);
-  } else {
-    userMarker = L.marker(e.latlng, {
-      icon: L.icon({
-        iconUrl: 'https://upload.wikimedia.org/wikipedia/commons/3/39/US_Army_star_insignia.svg',
-        iconSize: [40, 40],
-        iconAnchor: [20, 20],
-        popupAnchor: [0, -20]
-      })
-    }).addTo(map).bindPopup("📍 Vous êtes ici").openPopup();
+  let userMarker = null;
+  function onLocationFound(e) {
+    if (userMarker) {
+      userMarker.setLatLng(e.latlng);
+    } else {
+      userMarker = L.marker(e.latlng, {
+        icon: L.icon({
+          iconUrl: 'https://upload.wikimedia.org/wikipedia/commons/3/39/US_Army_star_insignia.svg',
+          iconSize: [40, 40],
+          iconAnchor: [20, 20],
+          popupAnchor: [0, -20]
+        })
+      }).addTo(map).bindPopup("📍 Vous êtes ici").openPopup();
+    }
   }
-}
-map.on('locationfound', onLocationFound);
 
-// localiser sans créer de cercle bleu
-map.locate({
-  setView: false,
-  maxZoom: 16,
-  watch: false
-});
+  // Empêcher Leaflet d'ajouter un cercle/carré par défaut
+  map.on('locationfound', function(e) {
+    if (e.layer) {
+      e.layer.remove();
+    }
+  });
+
+  map.on('locationfound', onLocationFound);
+
+  map.locate({
+    setView: false,
+    maxZoom: 16,
+    watch: false
+  });
 
   // Affichage conditionnel des labels texte simples
   function updateLabelVisibility() {

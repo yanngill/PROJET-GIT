@@ -178,8 +178,9 @@
     navigator.geolocation.getCurrentPosition(function(position) {
       const userLatLng = [position.coords.latitude, position.coords.longitude];
      userMarker = L.marker(userLatLng, {
-  icon: L.icon({
-    iconUrl: 'https://i.imgur.com/2KLWm9H.png',
+  icon: L.divIcon({
+    className: 'emoji-marker',
+    html: '🪖',
     iconSize: [30, 30],
     iconAnchor: [15, 15],
     popupAnchor: [0, -15]

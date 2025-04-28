@@ -138,6 +138,31 @@
     interactive: false
   }).addTo(map);
 
+  // Débarquement de la 2e DB
+const coordsLeclerc = [49.445259, -1.208396];
+const popupLeclerc = `
+  <div class="popup-content">
+    <strong>Débarquement de la 2e DB – 1er août 1944</strong><br>
+    Le 1er août 1944, la 2e Division Blindée du général Leclerc débarque sur Utah Beach, 
+    au niveau des villages de Saint-Martin-de-Varreville et Saint-Germain-de-Varreville.
+    Ici, tout autour de vous, débute la progression de la 2e DB vers la libération de la France.
+    
+    <img src="https://i.imgur.com/RNu3elD.jpeg" alt="Débarquement 2e DB - Photo 1" onclick="openLightbox(this.src)">
+    <img src="https://i.imgur.com/48QAgaj.jpeg" alt="Débarquement 2e DB - Photo 2" onclick="openLightbox(this.src)">
+    <img src="https://i.imgur.com/vqDfznp.jpeg" alt="Débarquement 2e DB - Photo 3" onclick="openLightbox(this.src)">
+
+    <div style="font-size:10px; margin-top:5px;">Sources : Fondation Maréchal Leclerc de Hauteclocque</div>
+    <a href="https://www.google.com/maps/dir/?api=1&destination=49.445259,-1.208396" target="_blank" class="btn-map">💠 S'y rendre</a>
+  </div>`;
+L.marker(coordsLeclerc, { icon: noShadowIcon }).addTo(map).bindPopup(popupLeclerc);
+L.marker(coordsLeclerc, {
+  icon: L.divIcon({
+    className: 'simple-label',
+    html: 'Débarquement 2e DB'
+  }),
+  interactive: false
+}).addTo(map);
+  
   // Ajout de la position de l'utilisateur
   let userMarker = null;
   function onLocationFound(e) {

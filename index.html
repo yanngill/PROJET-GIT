@@ -174,14 +174,14 @@
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(function(position) {
       const userLatLng = [position.coords.latitude, position.coords.longitude];
-      userMarker = L.marker(userLatLng, {
-        icon: L.icon({
-          iconUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/US_Army_star_insignia.png/240px-US_Army_star_insignia.png',
-          iconSize: [40, 40],
-          iconAnchor: [20, 20],
-          popupAnchor: [0, -20]
-        })
-      }).addTo(map).bindPopup("📍 Vous êtes ici").openPopup();
+     userMarker = L.marker(e.latlng, {
+  icon: L.icon({
+    iconUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/US_Army_star_insignia.png/30px-US_Army_star_insignia.png',
+    iconSize: [30, 30],
+    iconAnchor: [15, 15],
+    popupAnchor: [0, -15]
+  })
+}).addTo(map).bindPopup("📍 Vous êtes ici").openPopup();
     });
   }
 

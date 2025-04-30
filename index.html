@@ -144,14 +144,25 @@ La logistique massive commence à transformer la plage en zone de transit strat�
     interactive: false
   }).addTo(map);
 
-  // Chez Jeanne - 7 juin 1944
+  // Chez Jeanne - Carrousel (7 juin + M3 Stuart)
 const coordsChezJeanne = [49.408914, -1.317977];
 const popupChezJeanne = `
   <div class="popup-content">
-    <strong>Direction chez Jeanne – Sainte-Mère-Église</strong><br>
-    Photo prise le 7 juin 1944, au lendemain du Débarquement.<br>
-    Des soldats américains, en petits groupes, arpentent les rues du village tout juste libéré.
-    <img src="https://imgur.com/L9wnNVX.jpg" alt="Direction chez Jeanne" onclick="openLightbox(this.src)">
+    <strong id="carousel-title-jeanne">7 juin 1944 – Libération du bourg</strong><br>
+    <div id="carousel-description-jeanne">
+      Des soldats américains de la 82e Airborne avancent dans les rues de Sainte-Mère-Église, au lendemain du Débarquement.
+    </div>
+
+    <div class="glider-contain">
+      <div class="glider" id="glider-jeanne">
+        <img src="https://imgur.com/L9wnNVX.jpg" alt="Soldats à pied" onclick="openLightbox(this.src)">
+        <img src="https://imgur.com/NhRNtzs.jpg" alt="M3 Stuart 2e DB" onclick="openLightbox(this.src)">
+      </div>
+      <button class="glider-prev">«</button>
+      <button class="glider-next">»</button>
+      <div class="dots"></div>
+    </div>
+
     <div style="font-size:10px; margin-top:5px;">Source : US National Archives / War Documentary – Maxim Chornyi</div>
     <a href="https://www.google.com/maps/dir/?api=1&destination=49.408914,-1.317977" target="_blank" class="btn-map">💠 S'y rendre</a>
   </div>`;
@@ -248,21 +259,37 @@ L.marker(coordsHabbs, { icon: noShadowIcon }).addTo(map).bindPopup(popupHabbs);
   }
 
   // Activation du carrousel d'images quand un popup s'ouvre
-  map.on('popupopen', function(e) {
-    const gliderElement = e.popup.getElement().querySelector('.glider');
-    if (gliderElement) {
-      new Glider(gliderElement, {
-        slidesToShow: 1,
-        dots: e.popup.getElement().querySelector('.dots'),
-        arrows: {
-          prev: e.popup.getElement().querySelector('.glider-prev'),
-          next: e.popup.getElement().querySelector('.glider-next')
-        },
-        draggable: true,
-        scrollLock: true
+map.on('popupopen', function(e) {
+  const gliderElement = e.popup.getElement().querySelector('.glider');
+  if (gliderElement) {
+    const glider = new Glider(gliderElement, {
+      slidesToShow: 1,
+      dots: e.popup.getElement().querySelector('.dots'),
+      arrows: {
+        prev: e.popup.getElement().querySelector('.glider-prev'),
+        next: e.popup.getElement().querySelector('.glider-next')
+      },
+      draggable: true,
+      scrollLock: true
+    });
+
+    // Texte dynamique synchronisé pour Chez Jeanne
+    if (gliderElement.id === "glider-jeanne") {
+      const titles = [
+        "7 juin 1944 – Libération du bourg",
+        "Début août 1944 – Passage de la 2e DB"
+      ];
+      const descriptions = [
+        "Des soldats américains de la 82e Airborne avancent dans les rues de Sainte-Mère-Église, au lendemain du Débarquement.",
+        "Un char léger M3 Stuart de la 2e Division Blindée traverse le bourg, arborant la croix de Lorraine."
+      ];
+      gliderElement.addEventListener("glider-slide-visible", function(event) {
+        document.getElementById("carousel-title-jeanne").innerText = titles[event.detail.slide];
+        document.getElementById("carousel-description-jeanne").innerText = descriptions[event.detail.slide];
       });
     }
-  });
+  }
+});
 
   // Affichage conditionnel des labels texte simples
   function updateLabelVisibility() {

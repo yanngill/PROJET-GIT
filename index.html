@@ -144,6 +144,26 @@ La logistique massive commence à transformer la plage en zone de transit strat�
     interactive: false
   }).addTo(map);
 
+  // Chez Jeanne - 7 juin 1944
+const coordsChezJeanne = [49.408889, -1.317778];
+const popupChezJeanne = `
+  <div class="popup-content">
+    <strong>Direction chez Jeanne – Sainte-Mère-Église</strong><br>
+    Photo prise le 7 juin 1944, au lendemain du Débarquement.<br>
+    Des soldats américains, en petits groupes, arpentent les rues du village tout juste libéré.
+    <img src="https://imgur.com/L9wnNVX.jpg" alt="Direction chez Jeanne" onclick="openLightbox(this.src)">
+    <div style="font-size:10px; margin-top:5px;">Source : US National Archives / War Documentary – Maxim Chornyi</div>
+    <a href="https://www.google.com/maps/dir/?api=1&destination=49.408889,-1.317778" target="_blank" class="btn-map">💠 S'y rendre</a>
+  </div>`;
+L.marker(coordsChezJeanne, { icon: noShadowIcon }).addTo(map).bindPopup(popupChezJeanne);
+L.marker(coordsChezJeanne, {
+  icon: L.divIcon({
+    className: 'simple-label',
+    html: 'Chez Jeanne - 7 juin'
+  }),
+  interactive: false
+}).addTo(map);
+  
   // Débarquement de la 2e DB avec carrousel
   const coordsLeclerc = [49.445259, -1.208396];
   const popupLeclerc = `

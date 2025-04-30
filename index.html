@@ -204,6 +204,30 @@ const popupKoenig = `
     <a href="https://www.google.com/maps/dir/?api=1&destination=49.408333,-1.316667" target="_blank" class="btn-map">💠 S'y rendre</a>
   </div>`;
 L.marker(coordsKoenig, { icon: noShadowIcon }).addTo(map).bindPopup(popupKoenig);
+
+  // mairie allemands - occupation avant juin 44
+const coordsMairieOccupation = [49.409768, -1.318364];
+const popupMairieOccupation = `
+  <div class="popup-content">
+    <strong>Devant l'hôtel de ville – Occupation allemande</strong><br>
+    Durant l’occupation, des soldats allemands se prennent en photo devant l’hôtel de ville de Sainte-Mère-Église.  
+    Ces images, prises bien avant le Débarquement, témoignent du quotidien militaire des occupants.
+
+    <div class="glider-contain">
+      <div class="glider">
+        <img src="https://imgur.com/7ybdNyn.jpg" alt="Soldats allemands mairie 1" onclick="openLightbox(this.src)">
+        <img src="https://imgur.com/NV79BpD.jpg" alt="Soldats allemands mairie 2" onclick="openLightbox(this.src)">
+        <img src="https://imgur.com/7lNsDqS.jpg" alt="Soldats allemands mairie 3" onclick="openLightbox(this.src)">
+      </div>
+      <button class="glider-prev">«</button>
+      <button class="glider-next">»</button>
+      <div class="dots"></div>
+    </div>
+
+    <div style="font-size:10px; margin-top:5px;">Source : Collection privée / Archives locales</div>
+    <a href="https://www.google.com/maps/dir/?api=1&destination=49.409768,-1.318364" target="_blank" class="btn-map">💠 S'y rendre</a>
+  </div>`;
+L.marker(coordsMairieOccupation, { icon: noShadowIcon }).addTo(map).bindPopup(popupMairieOccupation);
   
   // panneau nord sme
   const coordsHabbs = [49.412970, -1.321191];

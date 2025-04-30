@@ -145,27 +145,20 @@ La logistique massive commence à transformer la plage en zone de transit strat�
   }).addTo(map);
 
   // Chez Jeanne - 7 juin 1944
-const coordsChezJeanne = [49.408889, -1.317778];
+const coordsChezJeanne = [49.408914, -1.317977];
 const popupChezJeanne = `
   <div class="popup-content">
-    <strong>Sainte-Mère-Église</strong><br>
+    <strong>Direction chez Jeanne – Sainte-Mère-Église</strong><br>
     Photo prise le 7 juin 1944, au lendemain du Débarquement.<br>
     Des soldats américains, en petits groupes, arpentent les rues du village tout juste libéré.
     <img src="https://imgur.com/L9wnNVX.jpg" alt="Direction chez Jeanne" onclick="openLightbox(this.src)">
     <div style="font-size:10px; margin-top:5px;">Source : US National Archives / War Documentary – Maxim Chornyi</div>
-    <a href="https://www.google.com/maps/dir/?api=1&destination=49.408889,-1.317778" target="_blank" class="btn-map">💠 S'y rendre</a>
+    <a href="https://www.google.com/maps/dir/?api=1&destination=49.408914,-1.317977" target="_blank" class="btn-map">💠 S'y rendre</a>
   </div>`;
 L.marker(coordsChezJeanne, { icon: noShadowIcon }).addTo(map).bindPopup(popupChezJeanne);
-L.marker(coordsChezJeanne, {
-  icon: L.divIcon({
-    className: 'simple-label',
-    html: 'Chez Jeanne - 7 juin'
-  }),
-  interactive: false
-}).addTo(map);
 
   // Patrouille équestre - Sainte-Mère
-const coordsPatrouilleEquestre = [49.407778, -1.317222];
+const coordsPatrouilleEquestre = [49.408034, -1.317192];
 const popupPatrouilleEquestre = `
   <div class="popup-content">
     <strong>Patrouille américaine à cheval – Sainte-Mère-Église</strong><br>
@@ -185,7 +178,7 @@ L.marker(coordsPatrouilleEquestre, {
 }).addTo(map);
 
   // Armée US devant l’église - Sainte-Mère
-const coordsEgliseSainteMere = [49.408611, -1.315556];
+const coordsEgliseSainteMere = [49.408333, -1.316667];
 const popupEgliseSainteMere = `
   <div class="popup-content">
     <strong>Défilé de l’armée américaine – Sainte-Mère-Église</strong><br>
@@ -197,7 +190,7 @@ const popupEgliseSainteMere = `
 L.marker(coordsEgliseSainteMere, { icon: noShadowIcon }).addTo(map).bindPopup(popupEgliseSainteMere);
 
   // Parachutistes rue Général Koenig - Sainte-Mère
-const coordsKoenig = [49.408333, -1.316667];
+const coordsKoenig = [49.408723, -1.317109];
 const popupKoenig = `
   <div class="popup-content">
     <strong>Parachutistes américains – Rue Général Koenig</strong><br>

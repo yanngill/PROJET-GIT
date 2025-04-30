@@ -148,7 +148,7 @@ La logistique massive commence à transformer la plage en zone de transit strat�
 const coordsChezJeanne = [49.408889, -1.317778];
 const popupChezJeanne = `
   <div class="popup-content">
-    <strong>Direction chez Jeanne – Sainte-Mère-Église</strong><br>
+    <strong>Sainte-Mère-Église</strong><br>
     Photo prise le 7 juin 1944, au lendemain du Débarquement.<br>
     Des soldats américains, en petits groupes, arpentent les rues du village tout juste libéré.
     <img src="https://imgur.com/L9wnNVX.jpg" alt="Direction chez Jeanne" onclick="openLightbox(this.src)">
@@ -160,6 +160,26 @@ L.marker(coordsChezJeanne, {
   icon: L.divIcon({
     className: 'simple-label',
     html: 'Chez Jeanne - 7 juin'
+  }),
+  interactive: false
+}).addTo(map);
+
+  // Patrouille équestre - Sainte-Mère
+const coordsPatrouilleEquestre = [49.407778, -1.317222];
+const popupPatrouilleEquestre = `
+  <div class="popup-content">
+    <strong>Patrouille américaine à cheval – Sainte-Mère-Église</strong><br>
+    Vous vous situez à l’endroit où passera, peu après la libération du bourg, une patrouille de reconnaissance américaine montée.<br><br>
+    Ces cavaliers appartiennent à la 82e Division Aéroportée, et font partie des premières forces à sécuriser la ville dans les jours suivant le Débarquement.
+    <img src="https://imgur.com/p3Uu4rr.jpg" alt="Patrouille à cheval" onclick="openLightbox(this.src)">
+    <div style="font-size:10px; margin-top:5px;">Source : US National Archives / War Documentary – Maxim Chornyi</div>
+    <a href="https://www.google.com/maps/dir/?api=1&destination=49.407778,-1.317222" target="_blank" class="btn-map">💠 S'y rendre</a>
+  </div>`;
+L.marker(coordsPatrouilleEquestre, { icon: noShadowIcon }).addTo(map).bindPopup(popupPatrouilleEquestre);
+L.marker(coordsPatrouilleEquestre, {
+  icon: L.divIcon({
+    className: 'simple-label',
+    html: 'Patrouille équestre'
   }),
   interactive: false
 }).addTo(map);

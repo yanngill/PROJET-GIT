@@ -169,13 +169,6 @@ const popupPatrouilleEquestre = `
     <a href="https://www.google.com/maps/dir/?api=1&destination=49.407778,-1.317222" target="_blank" class="btn-map">💠 S'y rendre</a>
   </div>`;
 L.marker(coordsPatrouilleEquestre, { icon: noShadowIcon }).addTo(map).bindPopup(popupPatrouilleEquestre);
-L.marker(coordsPatrouilleEquestre, {
-  icon: L.divIcon({
-    className: 'simple-label',
-    html: 'Patrouille équestre'
-  }),
-  interactive: false
-}).addTo(map);
 
   // Armée US devant l’église - Sainte-Mère
 const coordsEgliseSainteMere = [49.408546, -1.315331];
@@ -223,13 +216,6 @@ L.marker(coordsKoenig, { icon: noShadowIcon }).addTo(map).bindPopup(popupKoenig)
       <a href="https://www.google.com/maps/dir/?api=1&destination=49.445259,-1.208396" target="_blank" class="btn-map">💠 S'y rendre</a>
     </div>`;
   L.marker(coordsLeclerc, { icon: noShadowIcon }).addTo(map).bindPopup(popupLeclerc);
-  L.marker(coordsLeclerc, {
-    icon: L.divIcon({
-      className: 'simple-label',
-      html: 'Débarquement 2e DB'
-    }),
-    interactive: false
-  }).addTo(map);
 
   // Ajout de la position de l'utilisateur avec étoile US (sans bug)
   let userMarker = null;

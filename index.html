@@ -230,6 +230,36 @@ const popupHospice505 = `
     <a href="https://www.google.com/maps/dir/?api=1&destination=49.411297,-1.319750" target="_blank" class="btn-map">💠 S'y rendre</a>
   </div>`;
 L.marker(coordsHospice505, { icon: noShadowIcon }).addTo(map).bindPopup(popupHospice505);
+
+  // stug neuville - contre-attaque stoppée
+const coordsStugNeuville = [49.411824, -1.320132];
+const popupStugNeuville = `
+  <div class="popup-content">
+    <strong>Contre-attaque allemande – Neuville-au-Plain</strong><br>
+    Le 7 juin 1944, au matin, les parachutistes de la 82e Airborne subissent une violente contre-attaque allemande venant de Neuville-au-Plain.  
+    Malgré des pertes importantes, les paras du 505e régiment, sous les ordres du lieutenant Turnbull, tiennent leur position.  
+    Le soldat John E. Atchley se distingue en détruisant un blindé StuG III avec un tir décisif.  
+    L’avancée allemande est stoppée à cet endroit.
+
+    <div class="glider-contain">
+      <div class="glider">
+        <img src="https://imgur.com/ZhC6iiU.jpg" alt="Vue de loin" onclick="openLightbox(this.src)">
+        <img src="https://imgur.com/s1i2wHR.jpg" alt="StuG détruit face" onclick="openLightbox(this.src)">
+        <img src="https://imgur.com/hdosB1y.jpg" alt="StuG côté" onclick="openLightbox(this.src)">
+      </div>
+      <button class="glider-prev">«</button>
+      <button class="glider-next">»</button>
+      <div class="dots"></div>
+    </div>
+
+    <div style="font-size:11px; margin-top:8px; font-style:italic;">
+      ➤ StuG III Ausf. G : canon de 75 mm L/48, blindage frontal 80 mm, équipage de 4 hommes.
+    </div>
+
+    <div style="font-size:10px; margin-top:5px;">Source : US National Archives / War Documentary – Maxim Chornyi</div>
+    <a href="https://www.google.com/maps/dir/?api=1&destination=49.411824,-1.320132" target="_blank" class="btn-map">💠 S'y rendre</a>
+  </div>`;
+L.marker(coordsStugNeuville, { icon: noShadowIcon }).addTo(map).bindPopup(popupStugNeuville);
   
   // Débarquement de la 2e DB avec carrousel
   const coordsLeclerc = [49.445259, -1.208396];

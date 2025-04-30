@@ -217,6 +217,19 @@ const popupHabbs = `
     <a href="https://www.google.com/maps/dir/?api=1&destination=49.412970,-1.321191" target="_blank" class="btn-map">💠 S'y rendre</a>
   </div>`;
 L.marker(coordsHabbs, { icon: noShadowIcon }).addTo(map).bindPopup(popupHabbs);
+
+  // hospice us all - Poste de secours 505th PIR
+const coordsHospice505 = [49.411297, -1.319750];
+const popupHospice505 = `
+  <div class="popup-content">
+    <strong>Hospice – Regimental Aid Station du 505th PIR</strong><br>
+    Des personnels médicaux américains et allemands coopèrent brièvement à proximité de l’hospice,  
+    transformé en poste de secours par le 505th PIR de la 82e Airborne.
+    <img src="https://imgur.com/AlpvDK3.jpg" alt="Hospice médical" onclick="openLightbox(this.src)">
+    <div style="font-size:10px; margin-top:5px;">Source : US National Archives / War Documentary – Maxim Chornyi</div>
+    <a href="https://www.google.com/maps/dir/?api=1&destination=49.411297,-1.319750" target="_blank" class="btn-map">💠 S'y rendre</a>
+  </div>`;
+L.marker(coordsHospice505, { icon: noShadowIcon }).addTo(map).bindPopup(popupHospice505);
   
   // Débarquement de la 2e DB avec carrousel
   const coordsLeclerc = [49.445259, -1.208396];

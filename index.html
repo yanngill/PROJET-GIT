@@ -194,6 +194,19 @@ const popupKoenig = `
   </div>`;
 L.marker(coordsKoenig, { icon: noShadowIcon }).addTo(map).bindPopup(popupKoenig);
   
+  // panneau nord sme
+  const coordsHabbs = [49.412970, -1.321191];
+const popupHabbs = `
+  <div class="popup-content">
+    <strong>Entrée nord de Sainte-Mère-Église – 7 juin 1944</strong><br>
+    Pour une photo qui a marqué l’histoire.  
+    Le soldat Elmer Habbs, de la 82e Division aéroportée, se repose à l’entrée nord de Sainte-Mère-Église, près du panneau indicateur du village.
+    <img src="https://imgur.com/8T1qi6n.jpg" alt="Entrée nord - Habbs" onclick="openLightbox(this.src)">
+    <div style="font-size:10px; margin-top:5px;">Source : US National Archives / War Documentary – Maxim Chornyi</div>
+    <a href="https://www.google.com/maps/dir/?api=1&destination=49.412970,-1.321191" target="_blank" class="btn-map">💠 S'y rendre</a>
+  </div>`;
+L.marker(coordsHabbs, { icon: noShadowIcon }).addTo(map).bindPopup(popupHabbs);
+  
   // Débarquement de la 2e DB avec carrousel
   const coordsLeclerc = [49.445259, -1.208396];
   const popupLeclerc = `
@@ -217,7 +230,7 @@ L.marker(coordsKoenig, { icon: noShadowIcon }).addTo(map).bindPopup(popupKoenig)
     </div>`;
   L.marker(coordsLeclerc, { icon: noShadowIcon }).addTo(map).bindPopup(popupLeclerc);
 
-  // Ajout de la position de l'utilisateur avec étoile US (sans bug)
+  // Ajout de la position de l'utilisateur avec casque
   let userMarker = null;
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(function(position) {

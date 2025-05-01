@@ -112,13 +112,6 @@
       <a href="https://www.google.com/maps/dir/?api=1&destination=49.3965263,-0.9881764" target="_blank" class="btn-map">💠 S'y rendre</a>
     </div>`;
   L.marker(coordsHoc, { icon: noShadowIcon }).addTo(map).bindPopup(popupPointeHoc);
-  L.marker(coordsHoc, {
-    icon: L.divIcon({
-      className: 'simple-label',
-      html: 'La Pointe du Hoc'
-    }),
-    interactive: false
-  }).addTo(map);
 
   // PC LE RUQUET WN62
   const coordsRuquet1 = [49.364435, -0.863437];
@@ -132,13 +125,6 @@ Le secteur commence à être organisé pour accueillir les renforts et la logist
       <a href="https://www.google.com/maps/dir/?api=1&destination=49.364435,-0.863437" target="_blank" class="btn-map">💠 S'y rendre</a>
     </div>`;
   L.marker(coordsRuquet1, { icon: noShadowIcon }).addTo(map).bindPopup(popupRuquet1);
-  L.marker(coordsRuquet1, {
-    icon: L.divIcon({
-      className: 'simple-label',
-      html: 'Le Ruquet (Omaha Est)'
-    }),
-    interactive: false
-  }).addTo(map);
 
   // RUQUET WN 62 2DI
   const coordsRuquet2 = [49.364151, -0.864825];
@@ -152,13 +138,6 @@ La logistique massive commence à transformer la plage en zone de transit strat�
       <a href="https://www.google.com/maps/dir/?api=1&destination=49.364151,-0.864825" target="_blank" class="btn-map">💠 S'y rendre</a>
     </div>`;
   L.marker(coordsRuquet2, { icon: noShadowIcon }).addTo(map).bindPopup(popupRuquet2);
-  L.marker(coordsRuquet2, {
-    icon: L.divIcon({
-      className: 'simple-label',
-      html: 'Mur du Ruquet'
-    }),
-    interactive: false
-  }).addTo(map);
 
   // Chez Jeanne - Carrousel (7 juin + M3 Stuart)
 const coordsChezJeanne = [49.408914, -1.317977];
@@ -341,8 +320,8 @@ const largeLabels = [
   },
   {
     coords: [49.403301, -0.990070],
-    name: "POINTE DU HOC",
-    minZoom: 9,
+    name: "LA POINTE DU HOC",
+    minZoom: 10,
     maxZoom: 12
   },
   {

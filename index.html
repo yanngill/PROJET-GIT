@@ -22,7 +22,7 @@
       text-align: center;
       font-weight: bold;
     }
-    .simple-label {
+        .simple-label {
       font-size: 13px;
       color: black;
       font-family: sans-serif;
@@ -32,6 +32,21 @@
       white-space: nowrap;
       display: none;
     }
+
+    .big-label {
+      font-size: 13px;
+      color: black;
+      font-family: sans-serif;
+      font-weight: bold;
+      background: rgba(255,255,255,0.6);
+      padding: 2px 4px;
+      border-radius: 3px;
+      text-align: center;
+      white-space: nowrap;
+      pointer-events: none;
+      display: none;
+    }
+    
     /* Lightbox */
     #lightbox {
       position: fixed;
@@ -64,7 +79,7 @@
 <script src="https://cdn.jsdelivr.net/npm/glider-js@1/glider.min.js"></script>
 
 <script>
-  const map = L.map('map').setView([49.37, -0.90], 10);
+  const map = L.map('map').setView([49.37, -0.90], 9);
 
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
@@ -309,6 +324,78 @@ L.marker(coordsStugNeuville, { icon: noShadowIcon }).addTo(map).bindPopup(popupS
     </div>`;
   L.marker(coordsLeclerc, { icon: noShadowIcon }).addTo(map).bindPopup(popupLeclerc);
 
+// === Labels géographiques (affichage selon zoom) ===
+const largeLabels = [
+  {
+    coords: [49.422896, -1.182772],
+    name: "UTAH BEACH",
+    minZoom: 7,
+    maxZoom: 9
+  },
+  {
+    coords: [49.400928, -1.326108],
+    name: "SAINTE-MÈRE-ÉGLISE",
+    minZoom: 7,
+    maxZoom: 9
+  },
+  {
+    coords: [49.403301, -0.990070],
+    name: "POINTE DU HOC",
+    minZoom: 9,
+    maxZoom: 9
+  },
+  {
+    coords: [49.371295, -0.878340],
+    name: "OMAHA BEACH",
+    minZoom: 7,
+    maxZoom: 9
+  },
+  {
+    coords: [49.336866, -0.451792],
+    name: "JUNO BEACH",
+    minZoom: 7,
+    maxZoom: 9
+  },
+  {
+    coords: [49.314459, -0.337287],
+    name: "SWORD BEACH",
+    minZoom: 9,
+    maxZoom: 9
+  },
+  {
+    coords: [49.346032, -0.549646],
+    name: "GOLD BEACH",
+    minZoom: 9,
+    maxZoom: 9
+  }
+];
+
+// Création des labels sur la carte
+const labelMarkers = largeLabels.map(item =>
+  L.marker(item.coords, {
+    icon: L.divIcon({
+      className: 'big-label',
+      html: item.name
+    }),
+    interactive: false
+  }).addTo(map)
+);
+
+// Gestion de leur affichage selon le zoom
+function updateLargeLabelVisibility() {
+  const zoom = map.getZoom();
+  largeLabels.forEach((item, index) => {
+    const visible = zoom >= item.minZoom && zoom <= item.maxZoom;
+    const el = labelMarkers[index].getElement();
+    if (el) {
+      el.style.display = visible ? 'block' : 'none';
+    }
+  });
+}
+
+map.on('zoomend', updateLargeLabelVisibility);
+updateLargeLabelVisibility();
+  
   // Ajout de la position de l'utilisateur avec casque
   let userMarker = null;
   if (navigator.geolocation) {
